@@ -2,22 +2,48 @@
 
 package model
 
+type ModerationInfo interface {
+	IsModerationInfo()
+	GetID() string
+	GetBar() *string
+}
+
 type Post interface {
 	IsPost()
 	GetID() string
-	GetMedia() *string
 }
+
+type PostInfo interface {
+	IsPostInfo()
+	GetID() string
+}
+
+type CommentModerationInfo struct {
+	ID  string  `json:"id"`
+	Bar *string `json:"bar,omitempty"`
+}
+
+func (CommentModerationInfo) IsEntity() {}
+
+type PostModerationInfo struct {
+	ID  string  `json:"id"`
+	Foo *string `json:"foo,omitempty"`
+	Bar *string `json:"bar,omitempty"`
+}
+
+func (PostModerationInfo) IsEntity() {}
 
 type Query struct {
 }
 
-type SimplePost struct {
-	ID    string  `json:"id"`
-	Media *string `json:"media,omitempty"`
+type SubredditPost struct {
+	ID             string         `json:"id"`
+	ModerationInfo ModerationInfo `json:"moderationInfo,omitempty"`
 }
 
-func (SimplePost) IsPost()                {}
-func (this SimplePost) GetID() string     { return this.ID }
-func (this SimplePost) GetMedia() *string { return this.Media }
+func (SubredditPost) IsPostInfo()        {}
+func (this SubredditPost) GetID() string { return this.ID }
 
-func (SimplePost) IsEntity() {}
+func (SubredditPost) IsPost() {}
+
+func (SubredditPost) IsEntity() {}

@@ -1,25 +1,64 @@
-query Broken($full: Boolean = true) {
-  posts {
-    ...compactView
-    ...fullView @include(if: $full)
-  }
-}
-
-query Works {
-  posts {
-    ...compactView
-    ...fullView
-  }
-}
-
-fragment compactView on Compact {
-  post {
-    media(maxWidth: 216)
-  }
-}
-
-fragment fullView on Full {
-  post {
-    media(maxWidth: 640)
+query Q {
+  interface1ById(id: "1"){
+    type21s{
+      interface4{
+        bar
+        foo
+        type6s{
+          interface3{
+            id
+            foo
+          }
+        }
+        interface5{
+          foo
+          ... on Type51{
+            bar1
+          }
+          ... on Type52{
+            bar2
+          }
+          ... on Type53{
+            bar3
+          }
+          ... on Type54{
+            bar4
+          }
+          ... on Type55{
+            bar5
+          }
+        }
+      }
+    }
+      interface4{
+        bar
+        foo
+        type6s{
+          interface3{
+            id
+            foo
+          }
+        }
+        interface5{
+          foo
+          ... on Type51{
+            bar1
+          }
+          ... on Type52{
+            bar2
+          }
+          ... on Type53{
+            bar3
+          }
+          ... on Type54{
+            bar4
+          }
+          ... on Type55{
+            bar5
+          }
+        }
+      }
+      }
+    }
   }
 }

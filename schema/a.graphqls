@@ -1,13 +1,138 @@
 # A
 
-extend schema @link(url: "https://specs.apollo.dev/federation/v2.9", import: ["@key"])
+extend schema @link(url: "https://specs.apollo.dev/federation/v2.9", import: ["@key", "@shareable"])
 
-interface Post {
+interface Interface1 {
   id: ID!
-  media(maxWidth: Int): String
+  interface4: Interface4
+  type21s: [Type21!]!
 }
 
-type SimplePost implements Post @key(fields: "id") {
+interface Interface1A {
   id: ID!
-  media(maxWidth: Int): String
+  interface4: Interface4
+  type21s: [Type21!]!
+}
+
+type Type11 implements Interface1 & Interface1A @key(fields: "id") {
+  id: ID!
+  interface4: Interface4
+  type21s: [Type21!]!
+}
+
+type Type12 implements Interface1 & Interface1A {
+  id: ID!
+  interface4: Interface4
+  foo: String
+  type21s: [Type21!]!
+}
+
+type Type13 implements Interface1 & Interface1A @key(fields: "id") {
+  id: ID!
+  interface4: Interface4
+  type21s: [Type21!]!
+}
+
+type Type14 implements Interface1 @key(fields: "id") {
+  id: ID!
+  interface4: Interface4
+  type21s: [Type21!]!
+}
+
+type Type15 implements Interface1 @key(fields: "id") {
+  id: ID!
+  interface4: Interface4
+  type21s: [Type21!]!
+}
+
+type Type16 implements Interface1 @key(fields: "id") {
+  id: ID!
+  interface4: Interface4
+  type21s: [Type21!]!
+}
+
+interface Interface4 {
+  id: ID!
+  bar: String
+}
+
+type Type41 implements Interface4 @key(fields: "id") {
+  id: ID!
+  bar: String
+}
+
+type Type42 implements Interface4 @key(fields: "id") {
+  id: ID!
+  foo: String @shareable
+  bar: String
+  type6s: [Type6!]! @shareable
+  interface5: Interface5 @shareable
+}
+
+interface Interface3 {
+  id: ID!
+  foo: String
+}
+
+type Type31 implements Interface3 @key(fields: "id") {
+  id: ID!
+  foo: String
+}
+
+type Type32 implements Interface3 @key(fields: "id") {
+  id: ID!
+  foo: String
+}
+
+type Type33 implements Interface3 @key(fields: "id") {
+  id: ID!
+  foo: String
+}
+
+interface Interface2 {
+  id: ID!
+  foo: String
+}
+
+type Type21 implements Interface2 @key(fields: "id") {
+  id: ID!
+  foo: String
+}
+
+type Type22 implements Interface2 @key(fields: "id") {
+  id: ID!
+  foo: String
+}
+
+type Type6 @shareable {
+  interface3: Interface3
+}
+
+interface Interface5 {
+  foo: String
+}
+
+type Type51 implements Interface5 @shareable {
+  foo: String
+  bar1: String
+}
+
+type Type52 implements Interface5 @shareable {
+  foo: String
+  bar2: String
+}
+
+type Type53 implements Interface5 @shareable {
+  foo: String
+  bar3: String
+}
+
+type Type54 implements Interface5 @shareable {
+  foo: String
+  bar4: String
+}
+
+type Type55 implements Interface5 @shareable {
+  foo: String
+  bar5: String
 }

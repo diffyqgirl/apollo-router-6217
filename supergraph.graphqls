@@ -21,24 +21,61 @@ directive @join__unionMember(graph: join__Graph!, member: String!) repeatable on
 
 directive @link(url: String, as: String, for: link__Purpose, import: [link__Import]) repeatable on SCHEMA
 
-type Compact implements Element
-  @join__implements(graph: B, interface: "Element")
+interface Interface1
+  @join__type(graph: A)
   @join__type(graph: B)
 {
-  post: Post
+  id: ID!
+  interface4: Interface4 @join__field(graph: A)
+  type21s: [Type21!]! @join__field(graph: A)
+  foo: String @join__field(graph: B)
 }
 
-interface Element
+interface Interface1A
+  @join__type(graph: A)
   @join__type(graph: B)
 {
-  post: Post
+  id: ID!
+  interface4: Interface4 @join__field(graph: A)
+  type21s: [Type21!]! @join__field(graph: A)
+  foo: String @join__field(graph: B)
 }
 
-type Full implements Element
-  @join__implements(graph: B, interface: "Element")
+interface Interface2
+  @join__type(graph: A)
   @join__type(graph: B)
 {
-  post: Post
+  id: ID!
+  foo: String @join__field(graph: A)
+  bar: String @join__field(graph: B)
+  interface4: Interface4 @join__field(graph: B)
+}
+
+interface Interface3
+  @join__type(graph: A)
+  @join__type(graph: B)
+{
+  id: ID!
+  foo: String @join__field(graph: A)
+  bar: String @join__field(graph: B)
+}
+
+interface Interface4
+  @join__type(graph: A)
+  @join__type(graph: B)
+{
+  id: ID!
+  bar: String @join__field(graph: A)
+  foo: String @join__field(graph: B)
+  type6s: [Type6!]! @join__field(graph: B)
+  interface5: Interface5 @join__field(graph: B)
+}
+
+interface Interface5
+  @join__type(graph: A)
+  @join__type(graph: B)
+{
+  foo: String
 }
 
 input join__ContextArgument {
@@ -73,27 +110,224 @@ enum link__Purpose {
   EXECUTION
 }
 
-interface Post
-  @join__type(graph: A)
-  @join__type(graph: B)
-{
-  id: ID!
-  media(maxWidth: Int): String @join__field(graph: A)
-}
-
 type Query
   @join__type(graph: A)
   @join__type(graph: B)
 {
-  posts: [Element!] @join__field(graph: B)
+  interface1ById(id: ID!): Interface1 @join__field(graph: B)
 }
 
-type SimplePost implements Post
-  @join__implements(graph: A, interface: "Post")
-  @join__implements(graph: B, interface: "Post")
+type Type11 implements Interface1 & Interface1A
+  @join__implements(graph: A, interface: "Interface1")
+  @join__implements(graph: A, interface: "Interface1A")
+  @join__implements(graph: B, interface: "Interface1")
+  @join__implements(graph: B, interface: "Interface1A")
   @join__type(graph: A, key: "id")
   @join__type(graph: B, key: "id")
 {
   id: ID!
-  media(maxWidth: Int): String @join__field(graph: A)
+  interface4: Interface4 @join__field(graph: A)
+  type21s: [Type21!]! @join__field(graph: A)
+  foo: String @join__field(graph: B)
+}
+
+type Type12 implements Interface1 & Interface1A
+  @join__implements(graph: A, interface: "Interface1")
+  @join__implements(graph: A, interface: "Interface1A")
+  @join__type(graph: A)
+{
+  id: ID!
+  interface4: Interface4
+  foo: String
+  type21s: [Type21!]!
+}
+
+type Type13 implements Interface1 & Interface1A
+  @join__implements(graph: A, interface: "Interface1")
+  @join__implements(graph: A, interface: "Interface1A")
+  @join__implements(graph: B, interface: "Interface1")
+  @join__implements(graph: B, interface: "Interface1A")
+  @join__type(graph: A, key: "id")
+  @join__type(graph: B, key: "id")
+{
+  id: ID!
+  interface4: Interface4 @join__field(graph: A)
+  type21s: [Type21!]! @join__field(graph: A)
+  foo: String @join__field(graph: B)
+}
+
+type Type14 implements Interface1
+  @join__implements(graph: A, interface: "Interface1")
+  @join__implements(graph: B, interface: "Interface1")
+  @join__type(graph: A, key: "id")
+  @join__type(graph: B, key: "id")
+{
+  id: ID!
+  interface4: Interface4 @join__field(graph: A)
+  type21s: [Type21!]! @join__field(graph: A)
+  foo: String @join__field(graph: B)
+}
+
+type Type15 implements Interface1
+  @join__implements(graph: A, interface: "Interface1")
+  @join__implements(graph: B, interface: "Interface1")
+  @join__type(graph: A, key: "id")
+  @join__type(graph: B, key: "id")
+{
+  id: ID!
+  interface4: Interface4 @join__field(graph: A)
+  type21s: [Type21!]! @join__field(graph: A)
+  foo: String @join__field(graph: B)
+}
+
+type Type16 implements Interface1
+  @join__implements(graph: A, interface: "Interface1")
+  @join__implements(graph: B, interface: "Interface1")
+  @join__type(graph: A, key: "id")
+  @join__type(graph: B, key: "id")
+{
+  id: ID!
+  interface4: Interface4 @join__field(graph: A)
+  type21s: [Type21!]! @join__field(graph: A)
+  foo: String @join__field(graph: B)
+}
+
+type Type21 implements Interface2
+  @join__implements(graph: A, interface: "Interface2")
+  @join__implements(graph: B, interface: "Interface2")
+  @join__type(graph: A, key: "id")
+  @join__type(graph: B, key: "id")
+{
+  id: ID!
+  foo: String @join__field(graph: A)
+  bar: String @join__field(graph: B)
+  interface4: Interface4 @join__field(graph: B)
+}
+
+type Type22 implements Interface2
+  @join__implements(graph: A, interface: "Interface2")
+  @join__implements(graph: B, interface: "Interface2")
+  @join__type(graph: A, key: "id")
+  @join__type(graph: B, key: "id")
+{
+  id: ID!
+  foo: String @join__field(graph: A)
+  bar: String @join__field(graph: B)
+  interface4: Interface4 @join__field(graph: B)
+}
+
+type Type31 implements Interface3
+  @join__implements(graph: A, interface: "Interface3")
+  @join__implements(graph: B, interface: "Interface3")
+  @join__type(graph: A, key: "id")
+  @join__type(graph: B, key: "id")
+{
+  id: ID!
+  foo: String @join__field(graph: A)
+  bar: String @join__field(graph: B)
+}
+
+type Type32 implements Interface3
+  @join__implements(graph: A, interface: "Interface3")
+  @join__implements(graph: B, interface: "Interface3")
+  @join__type(graph: A, key: "id")
+  @join__type(graph: B, key: "id")
+{
+  id: ID!
+  foo: String @join__field(graph: A)
+  bar: String @join__field(graph: B)
+}
+
+type Type33 implements Interface3
+  @join__implements(graph: A, interface: "Interface3")
+  @join__implements(graph: B, interface: "Interface3")
+  @join__type(graph: A, key: "id")
+  @join__type(graph: B, key: "id")
+{
+  id: ID!
+  foo: String @join__field(graph: A)
+  bar: String @join__field(graph: B)
+}
+
+type Type41 implements Interface4
+  @join__implements(graph: A, interface: "Interface4")
+  @join__implements(graph: B, interface: "Interface4")
+  @join__type(graph: A, key: "id")
+  @join__type(graph: B, key: "id")
+{
+  id: ID!
+  bar: String @join__field(graph: A)
+  foo: String @join__field(graph: B)
+  type6s: [Type6!]! @join__field(graph: B)
+  interface5: Interface5 @join__field(graph: B)
+}
+
+type Type42 implements Interface4
+  @join__implements(graph: A, interface: "Interface4")
+  @join__implements(graph: B, interface: "Interface4")
+  @join__type(graph: A, key: "id")
+  @join__type(graph: B, key: "id")
+{
+  id: ID!
+  foo: String
+  bar: String @join__field(graph: A)
+  type6s: [Type6!]!
+  interface5: Interface5
+}
+
+type Type51 implements Interface5
+  @join__implements(graph: A, interface: "Interface5")
+  @join__implements(graph: B, interface: "Interface5")
+  @join__type(graph: A)
+  @join__type(graph: B)
+{
+  foo: String
+  bar1: String
+}
+
+type Type52 implements Interface5
+  @join__implements(graph: A, interface: "Interface5")
+  @join__implements(graph: B, interface: "Interface5")
+  @join__type(graph: A)
+  @join__type(graph: B)
+{
+  foo: String
+  bar2: String
+}
+
+type Type53 implements Interface5
+  @join__implements(graph: A, interface: "Interface5")
+  @join__implements(graph: B, interface: "Interface5")
+  @join__type(graph: A)
+  @join__type(graph: B)
+{
+  foo: String
+  bar3: String
+}
+
+type Type54 implements Interface5
+  @join__implements(graph: A, interface: "Interface5")
+  @join__implements(graph: B, interface: "Interface5")
+  @join__type(graph: A)
+  @join__type(graph: B)
+{
+  foo: String
+  bar4: String
+}
+
+type Type55 implements Interface5
+  @join__implements(graph: A, interface: "Interface5")
+  @join__implements(graph: B, interface: "Interface5")
+  @join__type(graph: A)
+  @join__type(graph: B)
+{
+  foo: String
+  bar5: String
+}
+
+type Type6
+  @join__type(graph: A)
+  @join__type(graph: B)
+{
+  interface3: Interface3
 }

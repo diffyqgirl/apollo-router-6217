@@ -2,9 +2,10 @@
 
 package model
 
-type Element interface {
-	IsElement()
-	GetPost() Post
+type ModerationInfo interface {
+	IsModerationInfo()
+	GetID() string
+	GetFoo() *string
 }
 
 type Post interface {
@@ -12,28 +13,36 @@ type Post interface {
 	GetID() string
 }
 
-type Compact struct {
-	Post Post `json:"post,omitempty"`
+type PostInfo interface {
+	IsPostInfo()
+	GetID() string
 }
 
-func (Compact) IsElement()         {}
-func (this Compact) GetPost() Post { return this.Post }
-
-type Full struct {
-	Post Post `json:"post,omitempty"`
+type CommentModerationInfo struct {
+	ID  string  `json:"id"`
+	Foo *string `json:"foo,omitempty"`
 }
 
-func (Full) IsElement()         {}
-func (this Full) GetPost() Post { return this.Post }
+func (CommentModerationInfo) IsEntity() {}
+
+type PostModerationInfo struct {
+	ID  string  `json:"id"`
+	Foo *string `json:"foo,omitempty"`
+}
+
+func (PostModerationInfo) IsEntity() {}
 
 type Query struct {
 }
 
-type SimplePost struct {
-	ID string `json:"id"`
+type SubredditPost struct {
+	ID             string         `json:"id"`
+	ModerationInfo ModerationInfo `json:"moderationInfo,omitempty"`
 }
 
-func (SimplePost) IsPost()            {}
-func (this SimplePost) GetID() string { return this.ID }
+func (SubredditPost) IsPostInfo()        {}
+func (this SubredditPost) GetID() string { return this.ID }
 
-func (SimplePost) IsEntity() {}
+func (SubredditPost) IsPost() {}
+
+func (SubredditPost) IsEntity() {}

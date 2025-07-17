@@ -36,7 +36,7 @@ func (ec *executionContext) __resolve__service(ctx context.Context) (fedruntime.
 	}, nil
 }
 
-func (ec *executionContext) __resolve_entities(ctx context.Context, representations []map[string]interface{}) []fedruntime.Entity {
+func (ec *executionContext) __resolve_entities(ctx context.Context, representations []map[string]any) []fedruntime.Entity {
 	list := make([]fedruntime.Entity, len(representations))
 
 	repsMap := ec.buildRepresentationGroups(ctx, representations)
@@ -153,21 +153,59 @@ func (ec *executionContext) resolveEntity(
 	}()
 
 	switch typeName {
-	case "SimplePost":
-		resolverName, err := entityResolverNameForSimplePost(ctx, rep)
+	case "CommentModerationInfo":
+		resolverName, err := entityResolverNameForCommentModerationInfo(ctx, rep)
 		if err != nil {
-			return nil, fmt.Errorf(`finding resolver for Entity "SimplePost": %w`, err)
+			return nil, fmt.Errorf(`finding resolver for Entity "CommentModerationInfo": %w`, err)
 		}
 		switch resolverName {
 
-		case "findSimplePostByID":
+		case "findCommentModerationInfoByID":
 			id0, err := ec.unmarshalNID2string(ctx, rep["id"])
 			if err != nil {
-				return nil, fmt.Errorf(`unmarshalling param 0 for findSimplePostByID(): %w`, err)
+				return nil, fmt.Errorf(`unmarshalling param 0 for findCommentModerationInfoByID(): %w`, err)
 			}
-			entity, err := ec.resolvers.Entity().FindSimplePostByID(ctx, id0)
+			entity, err := ec.resolvers.Entity().FindCommentModerationInfoByID(ctx, id0)
 			if err != nil {
-				return nil, fmt.Errorf(`resolving Entity "SimplePost": %w`, err)
+				return nil, fmt.Errorf(`resolving Entity "CommentModerationInfo": %w`, err)
+			}
+
+			return entity, nil
+		}
+	case "PostModerationInfo":
+		resolverName, err := entityResolverNameForPostModerationInfo(ctx, rep)
+		if err != nil {
+			return nil, fmt.Errorf(`finding resolver for Entity "PostModerationInfo": %w`, err)
+		}
+		switch resolverName {
+
+		case "findPostModerationInfoByID":
+			id0, err := ec.unmarshalNID2string(ctx, rep["id"])
+			if err != nil {
+				return nil, fmt.Errorf(`unmarshalling param 0 for findPostModerationInfoByID(): %w`, err)
+			}
+			entity, err := ec.resolvers.Entity().FindPostModerationInfoByID(ctx, id0)
+			if err != nil {
+				return nil, fmt.Errorf(`resolving Entity "PostModerationInfo": %w`, err)
+			}
+
+			return entity, nil
+		}
+	case "SubredditPost":
+		resolverName, err := entityResolverNameForSubredditPost(ctx, rep)
+		if err != nil {
+			return nil, fmt.Errorf(`finding resolver for Entity "SubredditPost": %w`, err)
+		}
+		switch resolverName {
+
+		case "findSubredditPostByID":
+			id0, err := ec.unmarshalNID2string(ctx, rep["id"])
+			if err != nil {
+				return nil, fmt.Errorf(`unmarshalling param 0 for findSubredditPostByID(): %w`, err)
+			}
+			entity, err := ec.resolvers.Entity().FindSubredditPostByID(ctx, id0)
+			if err != nil {
+				return nil, fmt.Errorf(`resolving Entity "SubredditPost": %w`, err)
 			}
 
 			return entity, nil
@@ -198,11 +236,14 @@ func (ec *executionContext) resolveManyEntities(
 	}
 }
 
-func entityResolverNameForSimplePost(ctx context.Context, rep EntityRepresentation) (string, error) {
+func entityResolverNameForCommentModerationInfo(ctx context.Context, rep EntityRepresentation) (string, error) {
+	// we collect errors because a later entity resolver may work fine
+	// when an entity has multiple keys
+	entityResolverErrs := []error{}
 	for {
 		var (
 			m   EntityRepresentation
-			val interface{}
+			val any
 			ok  bool
 		)
 		_ = val
@@ -212,15 +253,90 @@ func entityResolverNameForSimplePost(ctx context.Context, rep EntityRepresentati
 		m = rep
 		val, ok = m["id"]
 		if !ok {
+			entityResolverErrs = append(entityResolverErrs,
+				fmt.Errorf("%w due to missing Key Field \"id\" for CommentModerationInfo", ErrTypeNotFound))
 			break
 		}
 		if allNull {
 			allNull = val == nil
 		}
 		if allNull {
+			entityResolverErrs = append(entityResolverErrs,
+				fmt.Errorf("%w due to all null value KeyFields for CommentModerationInfo", ErrTypeNotFound))
 			break
 		}
-		return "findSimplePostByID", nil
+		return "findCommentModerationInfoByID", nil
 	}
-	return "", fmt.Errorf("%w for SimplePost", ErrTypeNotFound)
+	return "", fmt.Errorf("%w for CommentModerationInfo due to %v", ErrTypeNotFound,
+		errors.Join(entityResolverErrs...).Error())
+}
+
+func entityResolverNameForPostModerationInfo(ctx context.Context, rep EntityRepresentation) (string, error) {
+	// we collect errors because a later entity resolver may work fine
+	// when an entity has multiple keys
+	entityResolverErrs := []error{}
+	for {
+		var (
+			m   EntityRepresentation
+			val any
+			ok  bool
+		)
+		_ = val
+		// if all of the KeyFields values for this resolver are null,
+		// we shouldn't use use it
+		allNull := true
+		m = rep
+		val, ok = m["id"]
+		if !ok {
+			entityResolverErrs = append(entityResolverErrs,
+				fmt.Errorf("%w due to missing Key Field \"id\" for PostModerationInfo", ErrTypeNotFound))
+			break
+		}
+		if allNull {
+			allNull = val == nil
+		}
+		if allNull {
+			entityResolverErrs = append(entityResolverErrs,
+				fmt.Errorf("%w due to all null value KeyFields for PostModerationInfo", ErrTypeNotFound))
+			break
+		}
+		return "findPostModerationInfoByID", nil
+	}
+	return "", fmt.Errorf("%w for PostModerationInfo due to %v", ErrTypeNotFound,
+		errors.Join(entityResolverErrs...).Error())
+}
+
+func entityResolverNameForSubredditPost(ctx context.Context, rep EntityRepresentation) (string, error) {
+	// we collect errors because a later entity resolver may work fine
+	// when an entity has multiple keys
+	entityResolverErrs := []error{}
+	for {
+		var (
+			m   EntityRepresentation
+			val any
+			ok  bool
+		)
+		_ = val
+		// if all of the KeyFields values for this resolver are null,
+		// we shouldn't use use it
+		allNull := true
+		m = rep
+		val, ok = m["id"]
+		if !ok {
+			entityResolverErrs = append(entityResolverErrs,
+				fmt.Errorf("%w due to missing Key Field \"id\" for SubredditPost", ErrTypeNotFound))
+			break
+		}
+		if allNull {
+			allNull = val == nil
+		}
+		if allNull {
+			entityResolverErrs = append(entityResolverErrs,
+				fmt.Errorf("%w due to all null value KeyFields for SubredditPost", ErrTypeNotFound))
+			break
+		}
+		return "findSubredditPostByID", nil
+	}
+	return "", fmt.Errorf("%w for SubredditPost due to %v", ErrTypeNotFound,
+		errors.Join(entityResolverErrs...).Error())
 }

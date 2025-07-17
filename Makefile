@@ -1,11 +1,6 @@
-
-.DEFAULT: supergraph
-
 .PHONY: supergraph
-supergraph: ./supergraph.graphqls
-
-./supergraph.graphqls: schema/*.graphqls ./rover.yaml
-	APOLLO_TELEMETRY_DISABLED=1 ./rover supergraph compose --skip-update-check --config ./rover.yaml --elv2-license=accept > $@
+supergraph:
+	APOLLO_TELEMETRY_DISABLED=1 rover supergraph compose --skip-update-check --config rover.yaml --elv2-license=accept > supergraph.graphqls
 
 .PHONY: run
 run: ./supergraph.graphqls
