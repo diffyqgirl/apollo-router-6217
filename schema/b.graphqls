@@ -55,14 +55,6 @@ type Type41 implements Interface4 @key(fields: "id") {
   interface5: Interface5
 }
 
-type Type42 implements Interface4 @shareable {
-  id: ID!
-  foo: String
-  bar: String
-  type6s: [Type6!]!
-  interface5: Interface5
-}
-
 interface Interface3 {
   id: ID!
   bar: String

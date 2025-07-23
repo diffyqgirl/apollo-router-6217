@@ -61,7 +61,7 @@ type Type41 implements Interface4 @key(fields: "id") {
   bar: String
 }
 
-type Type42 implements Interface4 @shareable {
+type Type42 implements Interface4 {
   id: ID!
   foo: String
   bar: String
