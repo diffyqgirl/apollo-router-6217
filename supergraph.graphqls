@@ -265,12 +265,12 @@ type Type41 implements Interface4
 type Type42 implements Interface4
   @join__implements(graph: A, interface: "Interface4")
   @join__implements(graph: B, interface: "Interface4")
-  @join__type(graph: A, key: "id")
-  @join__type(graph: B, key: "id")
+  @join__type(graph: A)
+  @join__type(graph: B)
 {
   id: ID!
   foo: String
-  bar: String @join__field(graph: A)
+  bar: String
   type6s: [Type6!]!
   interface5: Interface5
 }
